@@ -1,0 +1,20 @@
+version: '3'
+services:
+  connector-sftp-receiver:
+    image: opencti/connector-sftp-receiver:rolling
+    environment:
+      - OPENCTI_URL=ChangeMe
+      - OPENCTI_TOKEN=ChangeMe
+      - CONNECTOR_ID=ChangeMe
+      - CONNECTOR_TYPE=EXTERNAL_IMPORT
+      - CONNECTOR_NAME=SFTP Receiver
+      - CONNECTOR_SCOPE=ChangeMe
+      - CONNECTOR_CONFIDENCE_LEVEL=3
+      - CONNECTOR_UPDATE_EXISTING_DATA=False
+      - CONNECTOR_LOG_LEVEL=info
+      - SFTP_SERVER_ADDRESS=ChangeMe
+      - SFTP_USERNAME=ChangeMe
+      - SFTP_PASSWORD=ChangeMe
+      - SFTP_FOLDER_IN=ChangeMe
+      - SFTP_INTERVAL=600 # Seconds (10 minutes)
+    restart: always
