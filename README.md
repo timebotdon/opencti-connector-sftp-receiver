@@ -1,5 +1,6 @@
 # OpenCTI-Connector SFTP
 OpenCTI connector that parses JSON/STIX files from an SFTP server.
+pycti/opencti api version: 4.5.5
 
 ## Usage with the OpenCTI Platform (Docker)
 1. Clone repo  

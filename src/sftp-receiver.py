@@ -1,5 +1,5 @@
-# API version 4.5.4
-# OpenCTI version 4.5.4
+# API version 4.5.5
+# OpenCTI version 4.5.5
 
 import os
 from typing import Optional, Dict, Any, Mapping
