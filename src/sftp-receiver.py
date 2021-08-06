@@ -12,6 +12,10 @@ import pysftp
 from pycti import OpenCTIConnectorHelper, get_config_variable
 
 
+# sftp connection options - disable host key verification
+cnopts = pysftp.CnOpts()
+cnopts.hostkeys = None
+
 class SftpReceiver:
 
     _STATE_LAST_RUN = "last_run"
@@ -73,29 +77,34 @@ class SftpReceiver:
 
     def fetch_sftp(self):
         try:
-
-            # sftp connection options - disable host key verification
-            cnopts = pysftp.CnOpts()
-            cnopts.hostkeys = None
-            with pysftp.Connection(host=self.sftp_server_address, username=self.sftp_server_address, password=self.sftp_password, cnopts=cnopts) as sftp:
+            # Connect to SFTP and copy files to docker temp folder
+            with pysftp.Connection(host=self.sftp_server_address, username=self.sftp_username, password=self.sftp_password, cnopts=cnopts) as sftp:
                 try:
-                    self.helper.log_info("SSH Connection established. Copying contents of directory..")
-                    sftp.get_r(self.sftp_folder_in, self.temp_dir)
-                    self.helper.log_info("Contents copied!")
+                    self.helper.log_info("SSH Connection established.")
+                    contents = sftp.listdir(self.sftp_folder_in)
+                    if len(contents) > 0:
+                        self.helper.log_info("Copying contents of directory..")
+                        for file in contents:
+                            if file.split(".")[-1] == "json":
+                                #print("copying {} to {}".format(file, self.temp_dir))
+                                sftp.get(self.sftp_folder_in  + "/" + file, self.temp_dir + "/" + file)
+                                sftp.remove(self.sftp_folder_in  + "/" + file)
+                            self.helper.log_info("Contents copied!")
+                    else:
+                        self.helper.log_info("Directory is empty.")
                 except Exception as e:
                     self.helper.log_error(str(e))
 
-            # for each file in temp folder, ingest the file, then remove json.
-            if os.listdir(self.temp_dir):
-                for file in os.listdir(self.temp_dir):
-                    self.helper.log_info("Pushing " + file + " to OpenCTI..")
-                    filePath = self.temp_dir + '/' + file
-                    with open(filePath, "r") as data:
-                        self.helper.log_info("Pushing to OpenCTI..")
-                        self.helper.send_stix2_bundle(bundle=data.read(), update=self.update_existing_data)
-                        os.remove(filePath)
+            # for each file in temp folder, ingest via OpenCTI the file, then remove json.
+            for file in os.listdir(self.temp_dir):
+                self.helper.log_info("Pushing " + file + " to OpenCTI..")
+                filePath = self.temp_dir + '/' + file
+                with open(filePath, "r") as data:
+                    self.helper.log_info("Pushing to OpenCTI..")
+                    self.helper.send_stix2_bundle(bundle=data.read(), update=self.update_existing_data)
+                    os.remove(filePath)
 
-            self.helper.log_info("Temp files cleared.")
+            self.helper.log_info("Operation complete.")
 
         except Exception as ex:
             self.helper.log_error(str(ex))

@@ -20,13 +20,13 @@ OpenCTI connector that parses JSON/STIX files from an SFTP server.
       - CONNECTOR_ID=ChangeMe
       - CONNECTOR_TYPE=EXTERNAL_IMPORT
       - CONNECTOR_NAME=SFTP Receiver
-      - CONNECTOR_SCOPE=ChangeMe
+      - CONNECTOR_SCOPE=application/json,text/xml
       - CONNECTOR_CONFIDENCE_LEVEL=3
       - CONNECTOR_UPDATE_EXISTING_DATA=False
       - CONNECTOR_LOG_LEVEL=info
-      - SFTP_SERVER_ADDRESS=192.168.2.129
-      - SFTP_USERNAME=opencti
-      - SFTP_PASSWORD=P@55w0rd
+      - SFTP_SERVER_ADDRESS=192.168.1.10
+      - SFTP_USERNAME=username
+      - SFTP_PASSWORD=password
       - SFTP_FOLDER_IN=in
       - SFTP_INTERVAL=600 # Seconds (10 minutes)
     restart: always
@@ -38,7 +38,7 @@ OpenCTI connector that parses JSON/STIX files from an SFTP server.
    `docker build -t opencti/connector-sftp-receiver:rolling .`
 
 6. Update/Run:  
-   `docker-compose -f opencti-docker-compose-file.yml up -d` from OpenCTI docker.
+   `docker-compose up -d` from OpenCTI docker.
 
 
 For more information on deploying a custom connector, visit [here](https://www.notion.so/HowTo-Build-your-first-connector-06b2690697404b5ebc6e3556a1385940)

@@ -5,14 +5,14 @@ opencti:
 connector:
   id: 'ChangeMe'
   type: 'EXTERNAL_IMPORT'
-  name: 'FtpReceiver'
+  name: 'SFTP Receiver'
   scope: 'ChangeMe'
   confidence_level: 15 # From 0 (Unknown) to 100 (Fully trusted)
   log_level: 'info'
   update_existing_data: False
 
 sftp-receiver:
-  server_address: 'ChangeMe' # IMAP server IP address
+  server_address: 'ChangeMe' # SFTP server IP address
   username: 'ChangeMe' # SFTP account username
   password: 'ChangeMe' # SFTP account password
   folder_in: 'ChangeMe' # Remote SFTP directory/path to process

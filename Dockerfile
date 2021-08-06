@@ -1,14 +1,16 @@
-FROM python:3.9-alpine
+FROM python:3.8-slim
 
 # Copy the connector
 COPY src /opt/opencti-connector-sftp-receiver
 
 # Install Python modules
-# hadolint ignore=DL3003
-RUN apk --no-cache add git build-base libmagic && \
+RUN apt-get update -y && \
+    apt-get install -y git libmagic1 && \
     cd /opt/opencti-connector-sftp-receiver && \
-    pip3 install --no-cache-dir -r requirements.txt && \
-    apk del git build-base
+    pip3 install --no-cache-dir -r requirements.txt
+
+# required for updating site-packages
+ENV PYTHONPATH="/usr/lib/python3.8/site-packages"
 
 # Expose and entrypoint
 COPY entrypoint.sh /

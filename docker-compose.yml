@@ -8,7 +8,7 @@ services:
       - CONNECTOR_ID=ChangeMe
       - CONNECTOR_TYPE=EXTERNAL_IMPORT
       - CONNECTOR_NAME=SFTP Receiver
-      - CONNECTOR_SCOPE=ChangeMe
+      - CONNECTOR_SCOPE=application/json,text/xml
       - CONNECTOR_CONFIDENCE_LEVEL=3
       - CONNECTOR_UPDATE_EXISTING_DATA=False
       - CONNECTOR_LOG_LEVEL=info
@@ -16,5 +16,5 @@ services:
       - SFTP_USERNAME=ChangeMe
       - SFTP_PASSWORD=ChangeMe
       - SFTP_FOLDER_IN=ChangeMe
-      - SFTP_INTERVAL=600 # Seconds (10 minutes)
+      - SFTP_INTERVAL=300 # Seconds (5 minutes)
     restart: always
