@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.9-slim
 
 # Copy the connector
 COPY src /opt/opencti-connector-sftp-receiver
